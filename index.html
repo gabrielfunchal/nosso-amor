@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nosso Amor</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #ffcccb;
+      color: #333;
+      text-align: center;
+      padding: 2rem;
+      overflow: hidden;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #d32f2f;
+    }
+    .photos-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto 2rem;
+    }
+    .photos {
+      position: relative;
+      height: 400px;
+    }
+    .photos img {
+      width: 300px;
+      height: auto;
+      border-radius: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .photos img.active {
+      opacity: 1;
+    }
+    audio {
+      margin-bottom: 1rem;
+    }
+    .counter {
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      font-weight: bold;
+      color: #d32f2f;
+    }
+    .hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: float 5s linear forwards;
+      opacity: 0.6;
+      bottom: -20px;
+    }
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: inherit;
+      border-radius: 50%;
+    }
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(45deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Feliz 1 ano e 1 mês, meu amor! ❤️</h1>
+  <audio controls autoplay loop>
+    <source src="musica.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio :(
+  </audio>
+
+  <div class="photos-wrapper">
+    <div class="photos">
+      <img src="foto1.jpeg" alt="Foto 1" class="active">
+      <img src="foto2.jpeg" alt="Foto 2">
+      <img src="foto3.jpeg" alt="Foto 3">
+      <img src="foto4.jpeg" alt="Foto 4">
+    </div>
+  </div>
+
+  <div class="counter" id="tempoJuntos"></div>
+
+  <div class="hearts" id="hearts"></div>
+
+  <script>
+    // Contador de tempo juntos
+    const dataInicio = new Date("2023-03-24T00:00:00");
+
+    function atualizaContador() {
+      const agora = new Date();
+      const diffMs = agora - dataInicio;
+
+      const dias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutos = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+      const segundos = Math.floor((diffMs % (1000 * 60)) / 1000);
+
+      const texto = `Desde: 24/03/2023 (há ${dias} dias, ${horas} horas, ${minutos} minutos, ${segundos} segundos)`;
+      document.getElementById("tempoJuntos").textContent = texto;
+    }
+
+    atualizaContador();
+    setInterval(atualizaContador, 1000);
+
+    // Slideshow das fotos
+    const fotos = document.querySelectorAll('.photos img');
+    let index = 0;
+    setInterval(() => {
+      fotos.forEach((img, i) => img.classList.toggle('active', i === index));
+      index = (index + 1) % fotos.length;
+    }, 3000);
+
+    // Corações flutuantes
+    function criaCoracao() {
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      
+      // Posição horizontal aleatória
+      heart.style.left = Math.random() * 100 + 'vw';
+      
+      // Tamanho aleatório (10px a 30px)
+      const tamanho = 10 + Math.random() * 20;
+      heart.style.width = tamanho + 'px';
+      heart.style.height = tamanho + 'px';
+      
+      // Cor aleatória (tons de vermelho/rosa)
+      const vermelho = Math.floor(200 + Math.random() * 55);
+      const verdeAzul = Math.floor(100 + Math.random() * 50);
+      heart.style.background = `rgb(${vermelho}, ${verdeAzul}, ${verdeAzul})`;
+      
+      // Duração da animação variada (3s a 7s)
+      heart.style.animationDuration = 3 + Math.random() * 4 + 's';
+      
+      document.getElementById('hearts').appendChild(heart);
+      
+      // Remove o coração após a animação terminar
+      setTimeout(() => heart.remove(), 7000);
+    }
+
+    // Cria corações a cada 300ms
+    setInterval(criaCoracao, 300);
+  </script>
+</body>
+</html>
